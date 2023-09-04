@@ -1,3 +1,4 @@
+.gitignore
 philo
 *.pdf
 .cache_exists
