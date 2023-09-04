@@ -30,10 +30,10 @@ typedef struct s_utils
 	bool			end;
 	long			time_set;
 	int				n_philo;
-	int				n_eat;
+	int				t_die;
 	int				t_eat;
 	int				t_sleep;
-	int				t_die;
+	int				n_eat;
 }				t_utils;
 
 //error.c
@@ -52,7 +52,7 @@ long	elapsed_time(long start);
 void	go_eat(t_philo *philo);
 void	go_sleep(int time);
 int		create_thread(t_utils *utils, int i);
-int		malloc_threads(t_utils *utils);
+int		calloc_threads(t_utils *utils);
 int		create_thread(t_utils *utils, int i);
 int		threads_join(t_utils *utils);
 #endif

@@ -5,7 +5,7 @@ int	init_utils(t_utils *utils)
 	int	i;
 
 	i = 0;
-	if (malloc_threads(utils) == EXIT_FAILURE)
+	if (calloc_threads(utils) == EXIT_FAILURE)
 		return(EXIT_FAILURE);
 	while (i < utils->n_philo)
 	{
@@ -37,23 +37,22 @@ void	init_param(char **argv, t_utils *utils)
 	utils->t_die = ft_atoi(argv[1]);
 	utils->t_eat = ft_atoi(argv[2]);
 	utils->t_sleep = ft_atoi(argv[3]);
+	utils->n_eat = -1;
 }
 
 int	parsing(int argc, char **argv, t_utils *utils)
 {
 	utils->time_set = retrieve_ms();
 	utils->end = false;
-	init_param(argv, utils);
-	if (utils->n_philo < 1)
+	if (argv[0] < 1)
 		return (EXIT_FAILURE);
+	init_param(argv, utils);
 	if (argc == 5)
 	{
 		utils->n_eat = ft_atoi(argv[4]);
 		if (utils->n_eat == 0)
 			return (EXIT_FAILURE);
 	}
-	else
-		utils->n_eat = -1;
 	return (EXIT_SUCCESS);
 }
 
