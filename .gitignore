@@ -1,0 +1,5 @@
+philo
+*.pdf
+.cache_exists
+obj
+*.o
