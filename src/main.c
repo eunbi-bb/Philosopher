@@ -1,5 +1,18 @@
 #include "../includes/philo.h"
 
+int	init_philo(t_utils *utils, int i)
+{
+	utils->philos[i].id = i + 1;
+	utils->philos[i].utils = utils;
+	utils->philos[i].n_must_eat = utils->n_must_eat;
+	utils->philos[i].last_pasta = get_time();
+	utils->philos[i].left = i;
+	utils->philos[i].right = (i + 1) % utils->n_philo;
+	if (pthread_create(&utils->philos[i].thread, NULL, &routine, &utils->philos[i]) != 0)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
 int	init_utils(t_utils *utils)
 {
 	int	i;
@@ -20,7 +33,7 @@ int	init_utils(t_utils *utils)
 	i = 0;
 	while (i < utils->n_philo)
 	{
-		if (create_thread(utils, i) == EXIT_FAILURE)
+		if (init_philo(utils, i) == EXIT_FAILURE)
 		{
 			free(utils->philos);
 			free(utils->forks);
@@ -31,29 +44,54 @@ int	init_utils(t_utils *utils)
 	return (EXIT_SUCCESS);
 }
 
-void	init_param(char **argv, t_utils *utils)
-{
-	utils->n_philo = ft_atoi(argv[0]);
-	utils->t_die = ft_atoi(argv[1]);
-	utils->t_eat = ft_atoi(argv[2]);
-	utils->t_sleep = ft_atoi(argv[3]);
-	utils->n_eat = -1;
-}
-
 int	parsing(int argc, char **argv, t_utils *utils)
 {
-	utils->time_set = retrieve_ms();
-	utils->end = false;
-	if (argv[0] < 1)
+	utils->start = get_time();
+	utils->finish = false;
+	utils->n_philo = ft_atoi(argv[1]);
+	utils->time_die = ft_atoi(argv[2]);
+	utils->time_eat = ft_atoi(argv[3]);
+	utils->time_sleep = ft_atoi(argv[4]);
+	utils->n_must_eat = -1;
+	if (utils->n_philo < 1)
 		return (EXIT_FAILURE);
-	init_param(argv, utils);
-	if (argc == 5)
+	if (argc == 6)
 	{
-		utils->n_eat = ft_atoi(argv[4]);
-		if (utils->n_eat == 0)
+		utils->n_must_eat = ft_atoi(argv[5]);
+		if (utils->n_must_eat == 0)
 			return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
+}
+
+void	destroy_threads(t_utils *utils)
+{
+	int	i;
+
+	i = 0;
+	while (i < utils->n_philo)
+	{
+		pthread_mutex_destroy(&utils->forks[i]);
+		i++;
+	}
+	free(utils->philos);
+	free(utils->forks);
+	pthread_mutex_destroy(&utils->pasta_time);
+	pthread_mutex_destroy(&utils->lock);
+}
+
+void	precise_usleep(__useconds_t usec)
+{
+	struct timeval	start;
+	struct timeval	end;
+	long			elapsed;
+
+	gettimeofday(&start, NULL);
+	usleep(usec);
+	gettimeofday(&end, NULL);
+	elapsed = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_usec - start.tv_usec);
+	if (elapsed < usec)
+		usleep(usec - elapsed);
 }
 
 int	main(int argc, char **argv)
@@ -66,11 +104,18 @@ int	main(int argc, char **argv)
 		err_msg(ERROR_ARGC);
 	tmp_argc = argc;
 	tmp_argv = argv;
-	if (parsing(tmp_argc - 1, ++tmp_argv, &utils) == EXIT_FAILURE)
+	if (parsing(tmp_argc, tmp_argv, &utils) == EXIT_FAILURE)
 		err_msg(ERROR_ARGV);
+	// if (utils.n_philo == 1)
+	// 	return (one_philo(&utils));
 	if (init_utils(&utils) == EXIT_FAILURE)
 		err_msg(ERROR_MALLOC);
-	monitoring_wrapper(&utils);
-	threads_join(&utils);
+	monitoring(&utils);
+	if (utils.n_philo == 1)
+		pthread_detach(utils.philos[0].thread);
+	else
+		threads_join(&utils);
+
+	destroy_threads(&utils);
 	return (0);
 }

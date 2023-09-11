@@ -1,0 +1,15 @@
+The philosopher should not eat and should die
+./philo 1 800 200 200
+
+No philosopher should die and the program should continue indefinitely
+./philo 5 800 200 200
+
+No philosopher should die 
+and the simulation should stop when every philosopher has eaten at least 7 times
+./philo 5 800 200 200 7
+
+No philosopher should die and the program should continue indefinitely
+./philo 4 410 200 200
+
+One philosopher should die
+./philo 4 310 200 100

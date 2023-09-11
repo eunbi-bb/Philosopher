@@ -1,6 +1,6 @@
 #include "../includes/philo.h"
 
-long	retrieve_ms(void)
+long	get_time(void)
 {
 	struct	timeval	current;
 	long	ms;
@@ -14,6 +14,23 @@ long	elapsed_time(long start)
 {
 	long	time;
 
-	time = retrieve_ms() - start;
+	time = get_time() - start;
 	return (time);
+}
+
+void	set_pasta_time(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->utils->lock);
+	philo->last_pasta = get_time();
+	pthread_mutex_unlock(&philo->utils->lock);
+}
+
+long	last_pasta_time(t_philo *philo)
+{
+	long	last_pasta_time;
+
+	pthread_mutex_lock(&philo->utils->lock);
+	last_pasta_time = philo->last_pasta;
+	pthread_mutex_unlock(&philo->utils->lock);
+	return (last_pasta_time);
 }

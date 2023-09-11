@@ -14,7 +14,7 @@ HEADER_SRC	= philo.h
 HEADERS		= $(addprefix $(HEADER_DIR), $(HEADER_SRC))
 
 SRC_DIR		= src/
-SRC_FILE	= main.c error.c ft_atoi.c ft_calloc.c lock.c monitoring.c mutex.c routine.c time.c thread.c
+SRC_FILE	= main.c error.c ft_atoi.c ft_calloc.c msg.c monitoring.c routine.c time.c thread.c
 
 OBJ			=	$(addprefix $(OBJ_DIR), $(SRC_FILE:.c=.o))
 

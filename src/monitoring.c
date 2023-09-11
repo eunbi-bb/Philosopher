@@ -1,32 +1,67 @@
 #include "../includes/philo.h"
 
+int	check_status(t_utils *utils)
+{
+	int	status;
+
+	pthread_mutex_lock(&utils->lock);
+	if (utils->finish == true)
+		status = true;
+	else
+		status = false;
+	pthread_mutex_unlock(&utils->lock);
+	return (status);
+}
+
+void	change_finish(t_utils *utils)
+{
+	pthread_mutex_lock(&utils->lock);
+	utils->finish = true;
+	pthread_mutex_unlock(&utils->lock);
+}
+
+// void	monitoring(t_utils *utils)
+// {
+// 	int		i;
+// 	long	starvation;
+
+// 	i = 0;
+// 	while (i < utils->n_philo)
+// 	{
+// 		starvation = get_time() - last_pasta_time(&utils->philos[i]);
+// 		if (utils->time_die < starvation)
+// 		{
+// 			change_finish(utils);
+// 			if (utils->philos[i].n_must_eat != 0)
+// 			{
+// 				printf("%ld\tPhilosopher %d died.\n", elapsed_time(utils->start), utils->philos[i].id);
+// 			}
+// 		}
+// 		i++;
+// 	}
+// }
+
 void	monitoring(t_utils *utils)
 {
-	int		i;
-	long	diff_pasta;
+	while (check_status(utils) == false)
+	{
+			int		i;
+	long	starvation;
 
 	i = 0;
 	while (i < utils->n_philo)
 	{
-		diff_pasta = retrieve_ms() - last_pasta_time(&utils->philos[i]);
-		if (utils->t_die < diff_pasta)
+		starvation = get_time() - last_pasta_time(&utils->philos[i]);
+		if (utils->time_die < starvation)
 		{
-			change_end(utils);
-			if (utils->philos[i].pasta != 0)
-				printf("%ld Philosopher %d has died\n", elapsed_time(utils->time_set), utils->philos[i].index);
-			break ;
+			change_finish(utils);
+			if (utils->philos[i].n_must_eat != 0)
+			{
+				printf("%ld\tPhilosopher %d died.\n", elapsed_time(utils->start), utils->philos[i].id);
+			}
 		}
 		i++;
 	}
-}
-
-void	monitoring_wrapper(t_utils *utils)
-{
-	while (!check_end(utils))
-	{
-		monitoring(utils);
-		usleep(1000);
+		precise_usleep(1000);
 	}
-	free(utils->philos);
-	free(utils->forks);
 }
