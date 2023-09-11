@@ -20,6 +20,7 @@ typedef struct	s_philo
 	long			last_pasta;
 	int				left;
 	int				right;
+	int				count_pasta;
 	struct s_utils	*utils;
 }				t_philo;
 
@@ -42,6 +43,7 @@ typedef struct s_utils
 int		err_msg(char *str);
 int		ft_atoi(const char *str);
 void	*ft_calloc(size_t count, size_t size);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 void	philo_msg(t_utils *utils, long time, char *str, int id);
 long	get_time(void);
 void	*routine(void *tmp);

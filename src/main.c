@@ -8,6 +8,7 @@ int	init_philo(t_utils *utils, int i)
 	utils->philos[i].last_pasta = get_time();
 	utils->philos[i].left = i;
 	utils->philos[i].right = (i + 1) % utils->n_philo;
+	utils->philos[i].count_pasta = 0;
 	if (pthread_create(&utils->philos[i].thread, NULL, &routine, &utils->philos[i]) != 0)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);

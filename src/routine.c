@@ -6,6 +6,7 @@ void	go_eat(t_philo *philo)
 	philo_msg(philo->utils, elapsed_time(philo->utils->start), "grabbed a fork from left.", philo->id);
 	pthread_mutex_lock(&philo->utils->forks[philo->right]);
 	philo_msg(philo->utils, elapsed_time(philo->utils->start), "grabbed a fork from right.", philo->id);
+	++philo->count_pasta;
 	philo_msg(philo->utils, elapsed_time(philo->utils->start), "is eating spaghetti.", philo->id);
 	set_pasta_time(philo);
 	philo->n_must_eat--;
