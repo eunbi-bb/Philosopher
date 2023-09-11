@@ -10,7 +10,7 @@
 
 # define	ERROR_ARGC "Invalid quantity of parameters.\n"
 # define	ERROR_ARGV "Invalid input provided.\n"
-# define	ERROR_MALLOC "Memory allocation error.\n"
+# define	ERROR_ALLOC "Memory allocation error.\n"
 
 typedef struct	s_philo
 {
@@ -39,7 +39,7 @@ typedef struct s_utils
 }				t_utils;
 
 //error.c
-void	err_msg(char *str);
+int		err_msg(char *str);
 int		ft_atoi(const char *str);
 void	*ft_calloc(size_t count, size_t size);
 void	philo_msg(t_utils *utils, long time, char *str, int id);

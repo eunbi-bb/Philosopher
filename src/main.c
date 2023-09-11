@@ -94,28 +94,35 @@ void	precise_usleep(__useconds_t usec)
 		usleep(usec - elapsed);
 }
 
+int	check_input(int argc, char **argv)
+{
+	if (argc != 5 && argc != 6)
+		return (err_msg(ERROR_ARGC));
+	if (ft_atoi(argv[1]) <= 0 || ft_atoi(argv[2]) <= 0 || ft_atoi(argv[3]) <= 0 || ft_atoi(argv[4]) <= 0)
+		return (err_msg(ERROR_ARGV));
+	if (argc == 6)
+	{
+		if (ft_atoi(argv[5]) <= 0)
+			return (err_msg(ERROR_ARGV));
+	}
+	return(EXIT_SUCCESS);
+}
+
 int	main(int argc, char **argv)
 {
 	t_utils	utils;
-	int		tmp_argc;
-	char	**tmp_argv;
 
-	if (argc != 5 && argc != 6)
-		err_msg(ERROR_ARGC);
-	tmp_argc = argc;
-	tmp_argv = argv;
-	if (parsing(tmp_argc, tmp_argv, &utils) == EXIT_FAILURE)
-		err_msg(ERROR_ARGV);
-	// if (utils.n_philo == 1)
-	// 	return (one_philo(&utils));
+	if (check_input(argc, argv) == EXIT_FAILURE)
+		return(EXIT_FAILURE);
+	if (parsing(argc, argv, &utils) == EXIT_FAILURE)
+		return(err_msg(ERROR_ARGV));
 	if (init_utils(&utils) == EXIT_FAILURE)
-		err_msg(ERROR_MALLOC);
+		return(err_msg(ERROR_ALLOC));
 	monitoring(&utils);
 	if (utils.n_philo == 1)
 		pthread_detach(utils.philos[0].thread);
 	else
 		threads_join(&utils);
-
 	destroy_threads(&utils);
 	return (0);
 }

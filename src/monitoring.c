@@ -59,6 +59,7 @@ void	monitoring(t_utils *utils)
 			{
 				printf("%ld\tPhilosopher %d died.\n", elapsed_time(utils->start), utils->philos[i].id);
 			}
+			break ;
 		}
 		i++;
 	}
