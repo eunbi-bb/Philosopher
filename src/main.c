@@ -19,14 +19,11 @@ int	init_utils(t_utils *utils)
 	int	i;
 
 	i = 0;
-	if (calloc_threads(utils) == EXIT_FAILURE)
-		return(EXIT_FAILURE);
 	while (i < utils->n_philo)
 	{
 		if (pthread_mutex_init(&utils->forks[i], NULL) == EXIT_FAILURE)
 		{
-			free(utils->philos);
-			free(utils->forks);
+			destroy_threads(utils);
 			return (EXIT_FAILURE);
 		}
 		i++;
@@ -36,8 +33,7 @@ int	init_utils(t_utils *utils)
 	{
 		if (init_philo(utils, i) == EXIT_FAILURE)
 		{
-			free(utils->philos);
-			free(utils->forks);
+			destroy_threads(utils);
 			return (EXIT_FAILURE);
 		}
 		i++;
@@ -65,36 +61,6 @@ int	parsing(int argc, char **argv, t_utils *utils)
 	return (EXIT_SUCCESS);
 }
 
-void	destroy_threads(t_utils *utils)
-{
-	int	i;
-
-	i = 0;
-	while (i < utils->n_philo)
-	{
-		pthread_mutex_destroy(&utils->forks[i]);
-		i++;
-	}
-	free(utils->philos);
-	free(utils->forks);
-	pthread_mutex_destroy(&utils->pasta_time);
-	pthread_mutex_destroy(&utils->lock);
-}
-
-void	precise_usleep(__useconds_t usec)
-{
-	struct timeval	start;
-	struct timeval	end;
-	long			elapsed;
-
-	gettimeofday(&start, NULL);
-	usleep(usec);
-	gettimeofday(&end, NULL);
-	elapsed = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_usec - start.tv_usec);
-	if (elapsed < usec)
-		usleep(usec - elapsed);
-}
-
 int	check_input(int argc, char **argv)
 {
 	if (argc != 5 && argc != 6)
@@ -117,13 +83,21 @@ int	main(int argc, char **argv)
 		return(EXIT_FAILURE);
 	if (parsing(argc, argv, &utils) == EXIT_FAILURE)
 		return(err_msg(ERROR_ARGV));
-	if (init_utils(&utils) == EXIT_FAILURE)
+	if (calloc_threads(&utils) == EXIT_FAILURE)
 		return(err_msg(ERROR_ALLOC));
+	if (init_utils(&utils) == EXIT_FAILURE)
+		return(err_msg(ERROR_THREAD));
 	monitoring(&utils);
 	if (utils.n_philo == 1)
-		pthread_detach(utils.philos[0].thread);
+	{
+		if (pthread_detach(utils.philos[0].thread) != 0)
+			return (err_msg(ERROR_THREAD_D));
+	}
 	else
-		threads_join(&utils);
+	{
+		if (threads_join(&utils) == EXIT_FAILURE)
+			return (err_msg(ERROR_THREAD_j));
+	}
 	destroy_threads(&utils);
 	return (0);
 }

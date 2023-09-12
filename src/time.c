@@ -34,3 +34,17 @@ long	last_pasta_time(t_philo *philo)
 	pthread_mutex_unlock(&philo->utils->lock);
 	return (last_pasta_time);
 }
+
+void	precise_usleep(__useconds_t usec)
+{
+	struct timeval	start;
+	struct timeval	end;
+	long			elapsed;
+
+	gettimeofday(&start, NULL);
+	usleep(usec);
+	gettimeofday(&end, NULL);
+	elapsed = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_usec - start.tv_usec);
+	if (elapsed < usec)
+		usleep(usec - elapsed);
+}

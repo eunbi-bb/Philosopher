@@ -29,3 +29,19 @@ int	threads_join(t_utils *utils)
 	}
 	return (EXIT_SUCCESS);
 }
+
+void	destroy_threads(t_utils *utils)
+{
+	int	i;
+
+	i = 0;
+	while (i < utils->n_philo)
+	{
+		pthread_mutex_destroy(&utils->forks[i]);
+		i++;
+	}
+	free(utils->philos);
+	free(utils->forks);
+	pthread_mutex_destroy(&utils->pasta_time);
+	pthread_mutex_destroy(&utils->lock);
+}

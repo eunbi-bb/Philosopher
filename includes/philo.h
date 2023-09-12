@@ -11,6 +11,9 @@
 # define	ERROR_ARGC "Invalid quantity of parameters.\n"
 # define	ERROR_ARGV "Invalid input provided.\n"
 # define	ERROR_ALLOC "Memory allocation error.\n"
+# define	ERROR_THREAD "Thread initialization error.\n"
+# define	ERROR_THREAD_D "pthread_deatch function error.\n"
+# define	ERROR_THREAD_j "pthread_join function error.\n"
 
 typedef struct	s_philo
 {
@@ -39,23 +42,27 @@ typedef struct s_utils
 	int				n_must_eat;
 }				t_utils;
 
-//error.c
-int		err_msg(char *str);
 int		ft_atoi(const char *str);
 void	*ft_calloc(size_t count, size_t size);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-void	philo_msg(t_utils *utils, long time, char *str, int id);
-long	get_time(void);
-void	*routine(void *tmp);
+//monitoring.c
 void	monitoring(t_utils *utils);
-void	set_pasta_time(t_philo *philo);
-long	last_pasta_time(t_philo *philo);
 int		check_status(t_utils *utils);
 void	change_finish(t_utils *utils);
-long	elapsed_time(long start);
+//msg.c
+int		err_msg(char *str);
+void	philo_msg(t_utils *utils, long time, char *str, int id);
+//rountine.c
+void	*routine(void *tmp);
 void	go_eat(t_philo *philo);
-int		init_philo(t_utils *utils, int i);
+//thread.c
 int		calloc_threads(t_utils *utils);
 int		threads_join(t_utils *utils);
+void	destroy_threads(t_utils *utils);
+//timne.c
+long	get_time(void);
+void	set_pasta_time(t_philo *philo);
+long	last_pasta_time(t_philo *philo);
+long	elapsed_time(long start);
 void	precise_usleep(__useconds_t usec);
 #endif

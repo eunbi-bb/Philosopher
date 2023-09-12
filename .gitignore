@@ -4,3 +4,4 @@ philo
 .cache_exists
 obj
 *.o
+tester
