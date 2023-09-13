@@ -1,7 +1,9 @@
-.gitignore
-philo
 *.pdf
 .cache_exists
 obj
 *.o
 tester
+philo
+.gitignore
+*.txt
+*.jpg
