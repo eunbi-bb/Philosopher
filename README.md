@@ -8,7 +8,7 @@
 - The philosophers cannot communicate each other. 
 - No need to say that philosophers should avoid dying!
 
-![Minishell(2)](https://github.com/eunbi-bb/minishell/assets/80834766/4094a97b-8482-4c0d-9f4a-c4b77c219a0d)
+![philo](https://github.com/eunbi-bb/Philosopher/assets/80834766/80e5d967-51dd-4482-85e6-209aff8c271a)
 
 ## Usage
 ```
