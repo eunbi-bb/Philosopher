@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   time.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: eucho <eucho@student.codam.nl>               +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/09/15 08:36:14 by eucho         #+#    #+#                 */
+/*   Updated: 2023/09/15 08:44:35 by eucho         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philo.h"
 
 long	get_time(void)
 {
-	struct	timeval	current;
-	long	ms;
+	struct timeval	current;
+	long			ms;
 
 	gettimeofday(&current, NULL);
 	ms = (current.tv_sec * 1000) + (current.tv_usec / 1000);
@@ -35,7 +47,7 @@ long	last_pasta_time(t_philo *philo)
 	return (last_pasta_time);
 }
 
-void	precise_usleep(__useconds_t usec)
+void	precise_usleep(long long usec)
 {
 	struct timeval	start;
 	struct timeval	end;
@@ -44,7 +56,8 @@ void	precise_usleep(__useconds_t usec)
 	gettimeofday(&start, NULL);
 	usleep(usec);
 	gettimeofday(&end, NULL);
-	elapsed = (end.tv_sec - start.tv_sec) * 1000000 + (end.tv_usec - start.tv_usec);
+	elapsed = (end.tv_sec - start.tv_sec) * 1000000 + \
+				(end.tv_usec - start.tv_usec);
 	if (elapsed < usec)
 		usleep(usec - elapsed);
 }

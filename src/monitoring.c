@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   monitoring.c                                       :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: eucho <eucho@student.codam.nl>               +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/09/15 08:35:43 by eucho         #+#    #+#                 */
+/*   Updated: 2023/09/15 08:42:10 by eucho         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philo.h"
 
 int	check_status(t_utils *utils)
@@ -27,22 +39,22 @@ void	monitoring(t_utils *utils)
 
 	while (check_status(utils) == false)
 	{
-
-	i = 0;
-	while (i < utils->n_philo)
-	{
-		starvation = get_time() - last_pasta_time(&utils->philos[i]);
-		if (utils->time_die < starvation)
+		i = 0;
+		while (i < utils->n_philo)
 		{
-			change_finish(utils);
-			if (utils->philos[i].n_must_eat != 0)
+			starvation = get_time() - last_pasta_time(&utils->philos[i]);
+			if (utils->time_die < starvation)
 			{
-				printf("%ld\tPhilosopher %d died.\n", elapsed_time(utils->start), utils->philos[i].id);
+				change_finish(utils);
+				if (utils->philos[i].n_must_eat != 0)
+				{
+					printf("%ld\tPhilosopher %d died.\n", \
+							elapsed_time(utils->start), utils->philos[i].id);
+				}
+				break ;
 			}
-			break ;
+			i++;
 		}
-		i++;
-	}
 		precise_usleep(1000);
 	}
 }

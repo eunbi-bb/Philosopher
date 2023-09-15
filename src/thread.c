@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   thread.c                                           :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: eucho <eucho@student.codam.nl>               +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/09/15 08:36:08 by eucho         #+#    #+#                 */
+/*   Updated: 2023/09/15 08:43:41 by eucho         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philo.h"
 
 int	calloc_threads(t_utils *utils)
@@ -11,7 +23,7 @@ int	calloc_threads(t_utils *utils)
 	if (utils->forks == NULL)
 	{
 		free(utils->philos);
-		return(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }

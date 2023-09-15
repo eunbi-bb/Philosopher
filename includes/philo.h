@@ -1,4 +1,16 @@
-#ifndef	PHILO_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   philo.h                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: eucho <eucho@student.codam.nl>               +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/09/15 08:35:23 by eucho         #+#    #+#                 */
+/*   Updated: 2023/09/15 08:44:44 by eucho         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef PHILO_H
 # define PHILO_H
 
 # include <stdio.h>
@@ -8,14 +20,14 @@
 # include <stdbool.h>
 # include <pthread.h>
 
-# define	ERROR_ARGC "Invalid quantity of parameters.\n"
-# define	ERROR_ARGV "Invalid input provided.\n"
-# define	ERROR_ALLOC "Memory allocation error.\n"
-# define	ERROR_THREAD "Thread initialization error.\n"
-# define	ERROR_THREAD_D "pthread_deatch function error.\n"
-# define	ERROR_THREAD_j "pthread_join function error.\n"
+# define ERROR_ARGC "Invalid quantity of parameters.\n"
+# define ERROR_ARGV "Invalid input provided.\n"
+# define ERROR_ALLOC "Memory allocation error.\n"
+# define ERROR_THREAD "Thread initialization error.\n"
+# define ERROR_THREAD_D "pthread_deatch function error.\n"
+# define ERROR_THREAD_J "pthread_join function error.\n"
 
-typedef struct	s_philo
+typedef struct s_philo
 {
 	pthread_t		thread;
 	int				id;
@@ -64,5 +76,5 @@ long	get_time(void);
 void	set_pasta_time(t_philo *philo);
 long	last_pasta_time(t_philo *philo);
 long	elapsed_time(long start);
-void	precise_usleep(__useconds_t usec);
+void	precise_usleep(long long usec);
 #endif
